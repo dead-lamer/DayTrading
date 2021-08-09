@@ -38,3 +38,5 @@ class DataMaker:
     design_candle['show_notrading'] = False
     design_candle['mav'] = 4
     design_candle['volume'] = True
+
+data_maker = DataMaker

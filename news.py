@@ -1,4 +1,4 @@
-from data_filler import DataMaker
+from data_filler import data_maker
 
 
 class GetNews:
@@ -6,7 +6,7 @@ class GetNews:
     def get_news(tik):
         import requests
         url = "https://stock-market-data.p.rapidapi.com/stock/buzz/news"
-        querystring = {"ticker_symbol": f"{tik}", "date": f"{DataMaker.y}-{DataMaker.m}-{DataMaker.d}"}
+        querystring = {"ticker_symbol": f"{tik}", "date": f"{data_maker.y}-{data_maker.m}-{data_maker.d}"}
         headers = {
             'x-rapidapi-key': "11d8bc37d8mshf186de22a127423p1552c3jsnd379e8ad19aa",
             'x-rapidapi-host': "stock-market-data.p.rapidapi.com"

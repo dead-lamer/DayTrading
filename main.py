@@ -1,4 +1,4 @@
-from animation import Animation
+from animative_data import main_animation
 import mplfinance as mpf
 import matplotlib.animation as animation
 
@@ -8,18 +8,18 @@ def get_ticker():
     return ticker
 
 
-fig, axes = mpf.plot(Animation.dframe,
+fig, axes = mpf.plot(main_animation.dframe,
                      returnfig=True,
                      type="candle")
 ax = axes[0]
 
 
 def animate(ival):
-    nxt = Animation.get_new_candle()  # !
-    Animation.dframe = Animation.dframe.append(nxt)
-    Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
+    nxt = main_animation.get_new_candle()  # !
+    main_animation.dframe = main_animation.dframe.append(nxt)
+    main_animation.rs = main_animation.dframe.resample(main_animation.resample_period).agg(main_animation.resample_map).dropna()
     ax.clear()
-    mpf.plot(Animation.rs, ax=ax, type="candle")
+    mpf.plot(main_animation.rs, ax=ax, type="candle")
 
 
 ani = animation.FuncAnimation(fig, animate, interval=250)
