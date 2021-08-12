@@ -1,8 +1,9 @@
-from data_filler import data_maker
+import data_filler
 
+dm = data_filler.DataMaker()
 
 class MainAnimation:
-    dframe = data_maker.form_data()
+    dframe = dm.form_data()
     resample_map = {'Open': 'first',
                     'High': 'max',
                     'Low': 'min',
@@ -15,7 +16,7 @@ class MainAnimation:
 
     @classmethod
     def get_new_candle(cls):
-        dframe = data_maker.form_data()
+        dframe = dm.form_data()
 
         rs = dframe.resample(MainAnimation.resample_period).agg(MainAnimation.resample_map).dropna()
 
@@ -27,5 +28,4 @@ class MainAnimation:
         else:
             return MainAnimation.get_new_candle()
 
-main_animation = MainAnimation
 

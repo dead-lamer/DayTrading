@@ -6,7 +6,9 @@ from datetime import datetime
 from main import get_ticker
 
 
+
 class DataMaker:
+
 
     ticker = get_ticker()
 
@@ -38,5 +40,3 @@ class DataMaker:
     design_candle['show_notrading'] = False
     design_candle['mav'] = 4
     design_candle['volume'] = True
-
-data_maker = DataMaker

@@ -1,10 +1,11 @@
-from data_filler import data_maker
+import data_filler
 import yfinance as yf
 
+dm = data_filler.DataMaker()
 
 class WorkingFunctions:
     @classmethod
-    def find_peak(cls, df=data_maker.form_data()):
+    def find_peak(cls, df=dm.form_data()):
         print(df['Open'].max())
         return df['Open'].max()
 
@@ -55,5 +56,5 @@ class WorkingFunctions:
     @classmethod
     def build_candle(cls):
         yf.pdr_override()
-        df = data_maker.form_data()
+        df = dm.form_data()
         WorkingFunctions.find_peak(df)
