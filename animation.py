@@ -35,6 +35,8 @@ fig, axes = mpf.plot(Animation.dframe,
                      type="candle")
 ax = axes[0]
 
+mpf.show()
+
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik) #!
 

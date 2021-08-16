@@ -64,8 +64,9 @@ class Broker:
                     print(i['title'] + "\n")
 
 
-
-WorkingFunctions.hanging_man(Broker.form_data(input("Choose your destiny: ")))
+tik = input("Choose your destiny: ")
+WorkingFunctions.hanging_man(Broker.form_data(tik))
+WorkingFunctions.hammer(Broker.form_data(tik))
 
 
 

@@ -4,7 +4,15 @@ class WorkingFunctions:
         peak_open = df['Open'].max()
         for i in range(0, len(df)-1):
             if df.iloc[i]['Open'] == peak_open:
-                print(df.iloc[i])
+                print("peak: ", df.iloc[i])
+                return df.iloc[i]
+
+    @classmethod
+    def find_bottom(cls, df):
+        peak_low = df['Low'].min()
+        for i in range(0, len(df)-1):
+            if df.iloc[i]['Low'] == peak_low:
+                print("bottom: ", df.iloc[i])
                 return df.iloc[i]
 
     @classmethod
@@ -17,7 +25,7 @@ class WorkingFunctions:
                 return True
 
     @classmethod
-    def type_candle(cls, body):
+    def type_candle(cls, body): # issue
         open = body[0]
         close = body[1]
         if open < close:
@@ -26,7 +34,7 @@ class WorkingFunctions:
         if open > close:
             print("Bear")
             return "Bear"
-        else:
+        if open == close:
             print("Doji")
             return "Doji"
 
@@ -50,16 +58,22 @@ class WorkingFunctions:
         print(WorkingFunctions.last_candle)
 
     @classmethod
-    def hammer(cls): # is on the bottom; lower shadow >= real body*2; upper shadow should be gone or tiny
-        pass
+    def hammer(cls, df): # is on the bottom; lower shadow >= real body*2; upper shadow should be gone or tiny
+        to_check = WorkingFunctions.find_bottom(df)
+        if (to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close'])) or (to_check['Open'] - to_check['Low'] >= 2*(to_check['Close'] - to_check['Open'])):
+            if to_check['Open'] == to_check['High'] or to_check['Close'] == to_check['High']:
+                type_hm = WorkingFunctions.type_candle([to_check['Open'], to_check['Close']])
+                print("Hammer")
+                print(type_hm) # issue
 
     @classmethod
     def hanging_man(cls, df): # on the top of price; lower shadow >= real body*2; upper shadow should be gone or tiny
         to_check = WorkingFunctions.find_peak(df) # open: 55:54 max: 55:55
         if (to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close'])) or (to_check['Open'] - to_check['Low'] >= 2*(to_check['Close'] - to_check['Open'])):
             if to_check['Open'] == to_check['High'] or to_check['Close'] == to_check['High']:
-                type = WorkingFunctions.type_candle([to_check['Open'], to_check['Close']])
+                type_hm = WorkingFunctions.type_candle([to_check['Open'], to_check['Close']])
                 print("Hanging man")
-                print(type)
+                print(type_hm) # issue
+
 
 
