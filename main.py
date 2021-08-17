@@ -1,5 +1,5 @@
 from pandas_datareader import data as pdr
-import yfinance as yf
+import yfinance as yf # this lib is free
 from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
