@@ -5,8 +5,9 @@ from candles import WorkingFunctions
 
 
 class Animation:
-    tik = "vz"
-    dframe = Broker.form_data("VZ")
+    tik = input("Choose your destiny: ")
+    Broker.dataframe = Broker.form_data(tik)
+    dframe = Broker.dataframe
     resample_map = {'Open': 'first',
                     'High': 'max',
                     'Low': 'min',
@@ -35,7 +36,6 @@ fig, axes = mpf.plot(Animation.dframe,
                      type="candle")
 ax = axes[0]
 
-mpf.show()
 
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik) #!

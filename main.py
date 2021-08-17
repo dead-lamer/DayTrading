@@ -20,7 +20,7 @@ end = datetime(y, m, d)
 
 class Broker:
     @staticmethod
-    def form_data(tik):
+    def form_data(tik): # could use 12Data if was rich enough
         yf.pdr_override()
         ohlc = pdr.get_data_yahoo(tickers=tik,
                                   period="30m",
@@ -34,6 +34,8 @@ class Broker:
         ohlc['Dates'] = pd.to_datetime(ohlc['Dates'])
         ohlc['Dates'] = ohlc['Dates'].apply(mpl_dates.date2num)
         return ohlc
+
+    dataframe = None
 
 
 
@@ -65,6 +67,9 @@ class Broker:
 
 
 tik = input("Choose your destiny: ")
+Broker.dataframe = Broker.form_data(tik)
+#WorkingFunctions.hanging_man(Broker.form_data(tik))
+#WorkingFunctions.hammer(Broker.form_data(tik))
 WorkingFunctions.hanging_man(Broker.form_data(tik))
 WorkingFunctions.hammer(Broker.form_data(tik))
 
