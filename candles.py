@@ -14,6 +14,7 @@ class WorkingFunctions:
             else:
                 return peak_top2
 
+
     @classmethod
     def find_bottom(cls, df):
         peak_low1 = df[-8:]['Open'].min()
