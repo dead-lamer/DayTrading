@@ -40,22 +40,22 @@ ax = axes[0]
 # mpf.show()
 
 def animate(ival):
+
     nxt = Animation.get_new_candle(Animation.tik) #!
-    last_candle = Animation.rs.iloc[-1]
-    WorkingFunctions.type_candle([last_candle['Open'], last_candle['Close']])
+
 
     Animation.dframe = Animation.dframe.append(nxt)
+    Animation.dframe = Animation.dframe.drop()
     Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
-    last_candle_index = Animation.rs[len(Animation.rs)-1]
-    Animation.rs = Animation.rs.drop(Animation.rs.index [[last_candle_index]]) #!
     ax.clear()
+
+    last_candle = Animation.rs.iloc[-1]
+
     mpf.plot(Animation.rs,ax=ax, type="candle")
+
 
 ani = animation.FuncAnimation(fig, animate, interval=10000)
 
 mpf.show()
 
-
-
-#TODO удалять последний элемент графика после добавления нового
 

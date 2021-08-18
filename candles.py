@@ -64,11 +64,13 @@ class WorkingFunctions:
         if candle is not None:
             open_ = candle['Open']
             close = candle['Close']
-            if len(WorkingFunctions.last_candle) <= 3:
+            if len(WorkingFunctions.last_candle) <= 2:
                 WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open_, close]))
+                print(WorkingFunctions.last_candle)
             else:
                 WorkingFunctions.last_candle.remove(WorkingFunctions.last_candle[0])
                 WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open_, close]))
+                print(WorkingFunctions.last_candle)
 
 
     @classmethod
