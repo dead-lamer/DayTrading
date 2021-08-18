@@ -37,13 +37,17 @@ fig, axes = mpf.plot(Animation.dframe,
                      type="candle")
 ax = axes[0]
 
+# mpf.show()
 
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik) #!
+    last_candle = Animation.rs.iloc[-1]
+    WorkingFunctions.type_candle([last_candle['Open'], last_candle['Close']])
 
     Animation.dframe = Animation.dframe.append(nxt)
-    WorkingFunctions.type_candle([nxt['Open'], nxt['Close']])
     Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
+    last_candle_index = Animation.rs[len(Animation.rs)-1]
+    Animation.rs = Animation.rs.drop(Animation.rs.index [[last_candle_index]]) #!
     ax.clear()
     mpf.plot(Animation.rs,ax=ax, type="candle")
 
@@ -53,5 +57,5 @@ mpf.show()
 
 
 
-
+#TODO удалять последний элемент графика после добавления нового
 

@@ -41,30 +41,34 @@ class WorkingFunctions:
 
     @classmethod
     def type_candle(cls, body): # issue
-        open = body[0]
+        open_ = body[0]
         close = body[1]
-        if open < close:
-            print("Bull")
-            return "Bull"
-        if open > close:
-            print("Bear")
-            return "Bear"
-        if open == close:
-            print("Doji")
-            return "Doji"
+        if open_ is None and close is None:
+            print("No candle")
+            return None
+        else:
+            if open_ < close:
+                print("Bull")
+                return "Bull"
+            if open_ > close:
+                print("Bear")
+                return "Bear"
+            if open_ == close:
+                print("Doji")
+                return "Doji"
 
     last_candle = []
 
     @classmethod
     def flow_candle(cls, candle):
         if candle is not None:
-            open = candle['Open']
+            open_ = candle['Open']
             close = candle['Close']
             if len(WorkingFunctions.last_candle) <= 3:
-                WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open, close]))
+                WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open_, close]))
             else:
                 WorkingFunctions.last_candle.remove(WorkingFunctions.last_candle[0])
-                WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open, close]))
+                WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open_, close]))
 
 
     @classmethod
@@ -104,6 +108,11 @@ class WorkingFunctions:
                 if to_check['Open'] == to_check['High']:
                     print("Hanging man")
                     return "Hanging man"
+
+
+    @classmethod
+    def engulfing_pattern(cls, df):
+        pass
 
 
 
