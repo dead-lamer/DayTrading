@@ -37,7 +37,9 @@ fig, axes = mpf.plot(Animation.dframe,
                      type="candle")
 ax = axes[0]
 
-# mpf.show()
+WorkingFunctions.flow_candle(Animation.rs)
+WorkingFunctions.hammer(Animation.rs)
+WorkingFunctions.hanging_man(Animation.rs)
 
 def animate(ival):
 
@@ -49,7 +51,9 @@ def animate(ival):
     Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
     ax.clear()
 
-    last_candle = Animation.rs.iloc[-1]
+    WorkingFunctions.flow_candle(Animation.rs)
+    WorkingFunctions.hammer(Animation.rs)
+    WorkingFunctions.hanging_man(Animation.rs)
 
     mpf.plot(Animation.rs,ax=ax, type="candle")
 

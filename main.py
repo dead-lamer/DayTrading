@@ -66,14 +66,5 @@ class Broker:
                     print(i['title'] + "\n")
 
 
-tik = input("Choose your destiny: ")
-Broker.dataframe = Broker.form_data(tik)
-#WorkingFunctions.hanging_man(Broker.form_data(tik))
-#WorkingFunctions.hammer(Broker.form_data(tik))
-WorkingFunctions.hanging_man(Broker.form_data(tik))
-WorkingFunctions.hammer(Broker.form_data(tik))
-
-
-
 ##TODO сделать модель для тренда цены
 ##TODO (через верхнюю и нижнюю границу, возможно, с помощью углов наклона "пола" и "потолка")

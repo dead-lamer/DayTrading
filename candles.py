@@ -40,7 +40,7 @@ class WorkingFunctions:
                 return True
 
     @classmethod
-    def type_candle(cls, body): # issue
+    def type_candle(cls, body):
         open_ = body[0]
         close = body[1]
         if open_ is None and close is None:
@@ -48,29 +48,31 @@ class WorkingFunctions:
             return None
         else:
             if open_ < close:
-                print("Bull")
                 return "Bull"
             if open_ > close:
-                print("Bear")
                 return "Bear"
             if open_ == close:
-                print("Doji")
                 return "Doji"
 
     last_candle = []
 
     @classmethod
-    def flow_candle(cls, candle):
-        if candle is not None:
-            open_ = candle['Open']
-            close = candle['Close']
-            if len(WorkingFunctions.last_candle) <= 2:
-                WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open_, close]))
-                print(WorkingFunctions.last_candle)
-            else:
-                WorkingFunctions.last_candle.remove(WorkingFunctions.last_candle[0])
-                WorkingFunctions.last_candle.append(WorkingFunctions.type_candle([open_, close]))
-                print(WorkingFunctions.last_candle)
+    def flow_candle(cls, rs): # input : resampled dataframe; checks 2 earlier candles from engulfing pattern
+        candle1 = rs.iloc[-3]
+        candle2 = rs.iloc[-4]
+
+        body1 = [candle1['Open'], candle1['Close']]
+        body2 = [candle2['Open'], candle2['Close']]
+
+
+        if [WorkingFunctions.type_candle(body1), WorkingFunctions.type_candle(body2)] == ['Bull' 'Bull']:
+            print("Bull-trend")
+            print("#########################################################################")
+            return "Bull-trend"
+        if [WorkingFunctions.type_candle(body1), WorkingFunctions.type_candle(body2)] == ['Bear', 'Bear']:
+            print("Bear-trend")
+            print("#########################################################################")
+            return "Bear-trend"
 
 
     @classmethod
@@ -83,6 +85,8 @@ class WorkingFunctions:
             if to_check['Open'] - to_check['Low'] >= 2*(to_check['Close'] - to_check['Open']):
                 if to_check['Close'] == to_check['High']:
                     print('Hammer')
+                    print(to_check.index)
+                    print("#########################################################################")
                     return "Hammer"
 
 
@@ -90,6 +94,8 @@ class WorkingFunctions:
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
                 if to_check['Open'] == to_check['High']:
                     print("Hammer")
+                    print(to_check.index)
+                    print("#########################################################################")
                     return "Hammer"
 
     @classmethod
@@ -102,6 +108,8 @@ class WorkingFunctions:
             if to_check['Open'] - to_check['Low'] >= 2 * (to_check['Close'] - to_check['Open']):
                 if to_check['Close'] == to_check['High']:
                     print("Hanging man")
+                    print(to_check.index)
+                    print("#########################################################################")
                     return "Hanging man"
 
 
@@ -109,13 +117,35 @@ class WorkingFunctions:
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
                 if to_check['Open'] == to_check['High']:
                     print("Hanging man")
+                    print(to_check.index)
+                    print("#########################################################################")
                     return "Hanging man"
 
 
     @classmethod
     def engulfing_pattern(cls, df):
-        pass
+        trend = WorkingFunctions.flow_candle(df)
+        candle1 = df.iloc[-2]
+        candle2 = df.iloc[-1]
 
+        if trend == 'Bear-trend':
+            if WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bear' and WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bull': # Bull engulfing pattern
+                if candle1['Open'] - candle1['Close'] < candle2['Close'] - candle2['Open']:
+                    print("Bull Engulfing Pattern")
+                    print(candle2.index)
+                    print("#########################################################################")
+                    return 'Bull Engulfing Pattern'
+
+        if trend == 'Bull-trend':
+            if WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bull' and WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bear': # Bear engulfing pattern
+                if candle1['Close'] - candle1['Open'] < candle2['Open'] - candle2['Close']:
+                    print("Bear Engulfing Pattern")
+                    print(candle2.index)
+                    print("#########################################################################")
+                    return "Bear Engulfing Pattern"
+
+        else:
+            return None
 
 
 
