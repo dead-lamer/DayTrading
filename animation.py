@@ -3,8 +3,6 @@ import matplotlib.animation as animation
 from main import Broker
 from candles import WorkingFunctions
 
-
-
 class Animation:
     tik = input("Choose your destiny: ")
     Broker.dataframe = Broker.form_data(tik)

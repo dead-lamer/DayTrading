@@ -16,8 +16,6 @@ y = datetime.today().year
 start = datetime(y-1, m, d)
 end = datetime(y, m, d)
 
-
-
 class Broker:
     @staticmethod
     def form_data(tik): # could use 12Data if was rich enough

@@ -56,6 +56,7 @@ class WorkingFunctions:
 
     last_candle = []
 
+
     @classmethod
     def flow_candle(cls, rs): # input : resampled dataframe; checks 2 earlier candles from engulfing pattern
         candle1 = rs.iloc[-3]
