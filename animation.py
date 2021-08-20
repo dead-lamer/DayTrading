@@ -35,21 +35,17 @@ fig, axes = mpf.plot(Animation.dframe,
                      type="candle")
 ax = axes[0]
 
-WorkingFunctions.flow_candle(Animation.rs)
-WorkingFunctions.hammer(Animation.rs)
-WorkingFunctions.hanging_man(Animation.rs)
-
 def animate(ival):
 
     nxt = Animation.get_new_candle(Animation.tik) #!
 
 
     Animation.dframe = Animation.dframe.append(nxt)
-    Animation.dframe = Animation.dframe.drop()
+    # Animation.dframe = Animation.dframe.drop()
     Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
     ax.clear()
 
-    WorkingFunctions.flow_candle(Animation.rs)
+
     WorkingFunctions.hammer(Animation.rs)
     WorkingFunctions.hanging_man(Animation.rs)
 

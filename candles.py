@@ -78,15 +78,15 @@ class WorkingFunctions:
 
     @classmethod
     def hammer(cls, df): # is on the bottom (goes after down-trend); lower shadow >= real body*2; upper shadow should be gone or tiny,
-        to_check = df.iloc[-1]
+        to_check = df.iloc[-2]
         bottom_line = WorkingFunctions.find_bottom(df)
 
 
         if to_check['Open'] <= bottom_line: #bull
             if to_check['Open'] - to_check['Low'] >= 2*(to_check['Close'] - to_check['Open']):
-                if to_check['Close'] == to_check['High']:
+                if to_check['Close'] == to_check['High'] or to_check:
                     print('Hammer')
-                    print(to_check.index)
+                    print(to_check)
                     print("#########################################################################")
                     return "Hammer"
 
@@ -95,13 +95,13 @@ class WorkingFunctions:
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
                 if to_check['Open'] == to_check['High']:
                     print("Hammer")
-                    print(to_check.index)
+                    print(to_check)
                     print("#########################################################################")
                     return "Hammer"
 
     @classmethod
     def hanging_man(cls, df): # on the top of price; lower shadow >= real body*2; upper shadow should be gone or tiny
-        to_check = df.iloc[-1]
+        to_check = df.iloc[-2]
         top_line = WorkingFunctions.find_peak(df)
 
 
@@ -109,7 +109,7 @@ class WorkingFunctions:
             if to_check['Open'] - to_check['Low'] >= 2 * (to_check['Close'] - to_check['Open']):
                 if to_check['Close'] == to_check['High']:
                     print("Hanging man")
-                    print(to_check.index)
+                    print(to_check)
                     print("#########################################################################")
                     return "Hanging man"
 
@@ -118,7 +118,7 @@ class WorkingFunctions:
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
                 if to_check['Open'] == to_check['High']:
                     print("Hanging man")
-                    print(to_check.index)
+                    print(to_check)
                     print("#########################################################################")
                     return "Hanging man"
 
@@ -133,7 +133,7 @@ class WorkingFunctions:
             if WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bear' and WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bull': # Bull engulfing pattern
                 if candle1['Open'] - candle1['Close'] < candle2['Close'] - candle2['Open']:
                     print("Bull Engulfing Pattern")
-                    print(candle2.index)
+                    print(candle2)
                     print("#########################################################################")
                     return 'Bull Engulfing Pattern'
 
@@ -141,7 +141,7 @@ class WorkingFunctions:
             if WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bull' and WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bear': # Bear engulfing pattern
                 if candle1['Close'] - candle1['Open'] < candle2['Open'] - candle2['Close']:
                     print("Bear Engulfing Pattern")
-                    print(candle2.index)
+                    print(candle2)
                     print("#########################################################################")
                     return "Bear Engulfing Pattern"
 
