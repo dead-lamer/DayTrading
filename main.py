@@ -31,6 +31,7 @@ class Broker:
         ohlc = ohlc.loc[:, ['Dates', 'Open', 'High', 'Low', 'Close']]
         ohlc['Dates'] = pd.to_datetime(ohlc['Dates'])
         ohlc['Dates'] = ohlc['Dates'].apply(mpl_dates.date2num)
+        # print(ohlc)
         return ohlc
 
     dataframe = None
@@ -62,7 +63,3 @@ class Broker:
             for j in i.keys():
                 if j == "title":
                     print(i['title'] + "\n")
-
-
-##TODO сделать модель для тренда цены
-##TODO (через верхнюю и нижнюю границу, возможно, с помощью углов наклона "пола" и "потолка")
