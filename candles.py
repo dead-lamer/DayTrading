@@ -125,7 +125,7 @@ class WorkingFunctions:
                     print("Hanging man")
                     print(to_check)
                     print("#########################################################################")
-                    return "Hanging man"
+                    return "Hanging man (strong down-trend)"
                     # TODO: means strong bear-mood
 
 

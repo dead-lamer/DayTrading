@@ -43,7 +43,9 @@ class Animation:
 
 fig, axes = mpf.plot(Animation.dframe,
                      returnfig=True,
-                     type="candle")
+                     type="candle",
+                     style=Broker.design_candle['style'],
+                     mav=Broker.design_candle['mav'])
 ax = axes[0]
 
 WorkingFunctions.engulfing_pattern(Animation.rs)
@@ -68,7 +70,11 @@ def animate(ival):
     WorkingFunctions.hanging_man(Animation.rs)
     WorkingFunctions.engulfing_pattern(Animation.rs)
 
-    mpf.plot(Animation.rs,ax=ax, type="candle")
+    mpf.plot(Animation.rs, ax=ax,
+            type="candle",
+            style=Broker.design_candle['style'],
+            mav=Broker.design_candle['mav']
+            )
 
 
 ani = animation.FuncAnimation(fig, animate, interval=10000)
