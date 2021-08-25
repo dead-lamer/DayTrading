@@ -87,16 +87,17 @@ class WorkingFunctions:
 
         if to_check['Open'] <= bottom_line: #bull
             if to_check['Open'] - to_check['Low'] >= 2*(to_check['Close'] - to_check['Open']):
-                if to_check['High'] <= to_check['Close'] * 1.0003:
+                if to_check['High'] <= to_check['Close'] * 1.000008:
                     print('Hammer')
                     print(to_check)
                     print("#########################################################################")
                     return "Hammer"
+                    # TODO: means strong bull-mood
 
 
         if to_check['Close'] <= bottom_line: #bear
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
-                if to_check['High'] <= to_check['Open'] * 1.0003:
+                if to_check['High'] <= to_check['Open'] * 1.000008:
                     print("Hammer")
                     print(to_check)
                     print("#########################################################################")
@@ -106,11 +107,12 @@ class WorkingFunctions:
     def hanging_man(cls, df): # on the top of price; lower shadow >= real body*2; upper shadow should be gone or tiny
         to_check = df.iloc[-2]
         top_line = WorkingFunctions.find_peak(df)
+        #TODO: if next day starts from point that is lower than hanging man body, it is strong bear-signal (the more is gap between next day point and hanging man the more it (hanging man) is peak)
 
 
         if to_check['Close'] >= top_line: # bull
             if to_check['Open'] - to_check['Low'] >= 2 * (to_check['Close'] - to_check['Open']):
-                if to_check['High'] <= to_check['Close'] * 1.0003:
+                if to_check['High'] <= to_check['Close'] * 1.000008:
                     print("Hanging man")
                     print(to_check)
                     print("#########################################################################")
@@ -119,11 +121,12 @@ class WorkingFunctions:
 
         if to_check['Open'] >= top_line: # bear
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
-                if to_check['High'] <= to_check['Open'] * 1.0003:
+                if to_check['High'] <= to_check['Open'] * 1.000008:
                     print("Hanging man")
                     print(to_check)
                     print("#########################################################################")
                     return "Hanging man"
+                    # TODO: means strong bear-mood
 
 
     @classmethod
