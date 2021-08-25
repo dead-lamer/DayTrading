@@ -6,7 +6,6 @@ import pandas as pd
 import matplotlib.dates as mpl_dates
 from candles import WorkingFunctions
 
-
 M = datetime.today().minute
 h = datetime.today().hour
 d = datetime.today().day

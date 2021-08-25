@@ -15,5 +15,6 @@ def create_c():
                                       dt.fromisoformat("2020-08-23")])
      return df
 
+
 create_c()
 
