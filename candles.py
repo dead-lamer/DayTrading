@@ -1,10 +1,10 @@
 class WorkingFunctions:
     @classmethod
-    def find_peak(cls, df):
-        peak_top1 = df[-8:]['Open'].max()
-        peak_top2 = df[-8:]['Close'].max()
-        for i in range(len(df)-8, len(df)-1):
-            # for the last 7 dframes
+    def find_peak(cls, df): #!
+        peak_top1 = df[-6:]['Open'].max()
+        peak_top2 = df[-6:]['Close'].max()
+        for i in range(len(df)-9, len(df)-1):
+            # for the last 6 dframes
             if df.iloc[i]['Open'] == peak_top1:
                 peak_top1 = df.iloc[i]['Open']
             if df.iloc[i]['Close'] == peak_top2:
@@ -18,9 +18,9 @@ class WorkingFunctions:
 
     @classmethod
     def find_bottom(cls, df):
-        peak_low1 = df[-8:]['Open'].min()
-        peak_low2 = df[-8:]['Close'].min()
-        for i in range(len(df)-8, len(df)-1): # for the last 7 dframes
+        peak_low1 = df[-6:]['Open'].min()
+        peak_low2 = df[-6:]['Close'].min()
+        for i in range(len(df)-9, len(df)-1): # for the last 7 dframes
             if df.iloc[i]['Open'] == peak_low1:
                 peak_low1 = df.iloc[i]['Open']
             if df.iloc[i]['Close'] == peak_low2:
@@ -87,7 +87,7 @@ class WorkingFunctions:
 
         if to_check['Open'] <= bottom_line: #bull
             if to_check['Open'] - to_check['Low'] >= 2*(to_check['Close'] - to_check['Open']):
-                if to_check['Close'] == to_check['High'] or to_check:
+                if to_check['High'] <= to_check['Close'] * 1.0003:
                     print('Hammer')
                     print(to_check)
                     print("#########################################################################")
@@ -96,7 +96,7 @@ class WorkingFunctions:
 
         if to_check['Close'] <= bottom_line: #bear
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
-                if to_check['Open'] == to_check['High']:
+                if to_check['High'] <= to_check['Open'] * 1.0003:
                     print("Hammer")
                     print(to_check)
                     print("#########################################################################")
@@ -110,7 +110,7 @@ class WorkingFunctions:
 
         if to_check['Close'] >= top_line: # bull
             if to_check['Open'] - to_check['Low'] >= 2 * (to_check['Close'] - to_check['Open']):
-                if to_check['Close'] == to_check['High']:
+                if to_check['High'] <= to_check['Close'] * 1.0003:
                     print("Hanging man")
                     print(to_check)
                     print("#########################################################################")
@@ -119,7 +119,7 @@ class WorkingFunctions:
 
         if to_check['Open'] >= top_line: # bear
             if to_check['Close'] - to_check['Low'] >= 2*(to_check['Open'] - to_check['Close']):
-                if to_check['Open'] == to_check['High']:
+                if to_check['High'] <= to_check['Open'] * 1.0003:
                     print("Hanging man")
                     print(to_check)
                     print("#########################################################################")

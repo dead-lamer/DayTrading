@@ -5,10 +5,15 @@ import create_candles
 from main import Broker
 from candles import WorkingFunctions
 
+# hell git
+
 class Animation:
     tik = input("Choose your destiny: ")
     Broker.dataframe = Broker.form_data(tik)
     dframe = Broker.dataframe
+
+    last_time_index = dframe.index[-1]
+
     # dframe = create_candles.create_c()
 
     resample_map = {'Open': 'first',
@@ -34,6 +39,8 @@ class Animation:
         else:
             return Animation.get_new_candle(Animation.tik) #!
 
+
+
 fig, axes = mpf.plot(Animation.dframe,
                      returnfig=True,
                      type="candle")
@@ -41,21 +48,25 @@ ax = axes[0]
 
 WorkingFunctions.engulfing_pattern(Animation.rs)
 
-mpf.show()
+#mpf.show()
 
 def animate(ival):
-
-    nxt = Animation.get_new_candle(Animation.tik) #!
-
+    nxt = Animation.get_new_candle(Animation.tik)
 
     Animation.dframe = Animation.dframe.append(nxt)
-    # Animation.dframe = Animation.dframe.drop()
-    Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
+
     ax.clear()
 
+    if Animation.dframe.index[-1] != Animation.last_time_index:
+        Animation.dframe = Animation.dframe.drop([Animation.dframe.index[0]])
+
+    Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()  #
+
+    Animation.last_time_index = Animation.dframe.index[-1]
 
     WorkingFunctions.hammer(Animation.rs)
     WorkingFunctions.hanging_man(Animation.rs)
+    WorkingFunctions.engulfing_pattern(Animation.rs)
 
     mpf.plot(Animation.rs,ax=ax, type="candle")
 
