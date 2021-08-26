@@ -2,19 +2,19 @@ import mplfinance as mpf
 import matplotlib.animation as animation
 
 import create_candles
+import pandas as pd
+
 from main import Broker
 from candles import WorkingFunctions
-
-# hell git
 
 class Animation:
     tik = input("Choose your destiny: ")
     Broker.dataframe = Broker.form_data(tik)
     dframe = Broker.dataframe
 
-    last_time_index = dframe.index[-1]
-
     # dframe = create_candles.create_c()
+
+    last_time_index = dframe.index[-1]
 
     resample_map = {'Open': 'first',
                     'High': 'max',
@@ -48,7 +48,8 @@ fig, axes = mpf.plot(Animation.dframe,
                      mav=Broker.design_candle['mav'])
 ax = axes[0]
 
-WorkingFunctions.engulfing_pattern(Animation.rs)
+#WorkingFunctions.hanging_man(Animation.rs)
+
 
 #mpf.show()
 

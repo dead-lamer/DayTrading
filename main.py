@@ -43,7 +43,7 @@ class Broker:
     design_candle['type'] = "candle"
     design_candle['style'] = "charles"
     design_candle['show_notrading'] = False
-    design_candle['mav'] = 3
+    design_candle['mav'] = 2
     design_candle['volume'] = True
 
     @staticmethod
@@ -62,3 +62,4 @@ class Broker:
             for j in i.keys():
                 if j == "title":
                     print(i['title'] + "\n")
+
