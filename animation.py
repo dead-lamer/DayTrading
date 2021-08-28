@@ -53,7 +53,7 @@ ax.set_title("Lazarev inc.")
 
 # WorkingFunctions.hanging_man(Animation.rs)
 
-mpf.show()
+# mpf.show()
 
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik)
