@@ -1,3 +1,5 @@
+yfinance
 pandas_datareader
 matplotlib
 mplfinance
+pyqt5
