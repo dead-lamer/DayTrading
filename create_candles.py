@@ -5,17 +5,17 @@ import pandas as pd
 
 
 def create_c():
-     d = {'Open': [52, 52, 52, 50, 58, 55],
-          'High': [53, 53, 53, 56, 58.000464, 57],
-          'Low': [55, 55, 55, 50, 51, 55],
-          'Close': [55, 55, 55, 56, 57, 57],
-          'Volume': [100, 99, 98, 97, 96, 95]}
-     df = pd.DataFrame(data=d, index=[dt.fromisoformat("2020-08-20"),
-                                      dt.fromisoformat("2020-08-21"),
-                                      dt.fromisoformat("2020-08-22"),
-                                      dt.fromisoformat("2020-08-23"),
-                                      dt.fromisoformat("2020-08-24"),
-                                      dt.fromisoformat("2020-08-25")])
+     d = {'Open': [55, 55, 55, 55, ],
+          'High': [56, 56, 56, 56, ],
+          'Low': [55, 55, 55, 55, ],
+          'Close': [56, 56, 56, 56, ],
+          'Volume': [100, 999, 98, 97, 96, 995]}
+     df = pd.DataFrame(data=d, index=[dt.fromisoformat("2021-08-27 15:55:00-04:00"),
+                                      dt.fromisoformat("2021-08-27 15:56:00-04:00"),
+                                      dt.fromisoformat("2021-08-27 15:57:00-04:00"),
+                                      dt.fromisoformat("2021-08-27 15:58:00-04:00"),
+                                      dt.fromisoformat("2021-08-27 15:59:00-04:00"),
+                                      dt.fromisoformat("2021-08-28 09:30:00-04:00")])
      return df
 
 

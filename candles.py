@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class WorkingFunctions:
 
     @classmethod
@@ -175,6 +177,31 @@ class WorkingFunctions:
 
         else:
             return None
+
+# 1) bear candle is peak
+# 2) bear candle time is 9:30
+# 4) bull and bear
+# 5) bull after up_trend
+# 6) bear open is higher than bull up shadow
+# 7)
+# 8)
+
+    @classmethod
+    def dark_cloud_cover(cls, df):
+        # last = 15:59:00-04:00
+        # 2021-08-27 15:30:00-04:00
+        start_time = f"{datetime.today().year}-{datetime.today().month}-{datetime.today().day} 09:30"
+        candle1 = df.iloc[-1]
+        # counts from right!!!
+        candle2 = df.iloc[-2]
+        top_line = WorkingFunctions.find_peak(df)
+
+        if candle1.index[0:16] == start_time:
+            if WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bear' and WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bull':
+                if candle1['Open'] >= top_line and candle2['Close'] < candle1['Open']:
+                    print("test")
+
+
 
 
 # TODO сделать сильные сигналы для модели поглощения

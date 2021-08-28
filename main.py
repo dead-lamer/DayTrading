@@ -3,16 +3,17 @@ import yfinance as yf # this lib is free
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-M = datetime.today().minute
-h = datetime.today().hour
-d = datetime.today().day
-m = datetime.today().month
-y = datetime.today().year
-
-start = datetime(y-1, m, d)
-end = datetime(y, m, d)
 
 class Broker:
+    M = datetime.today().minute
+    h = datetime.today().hour
+    d = datetime.today().day
+    m = datetime.today().month
+    y = datetime.today().year
+
+    start = datetime(y - 1, m, d)
+    end = datetime(y, m, d)
+
     @staticmethod
     def form_data(tik): # could use 12Data if was rich enough
         yf.pdr_override()
