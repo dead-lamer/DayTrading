@@ -1,7 +1,7 @@
 import mplfinance as mpf
 import matplotlib.animation as animation
 
-import create_candles
+# import create_candles
 
 from main import Broker
 from candles import WorkingFunctions
@@ -47,15 +47,15 @@ fig, axes = mpf.plot(Animation.dframe,
                      )
 
 ax = axes[0]
+ax_v = axes[2]
+print(axes[2], axes[0])
 
 ax.set_title("Lazarev inc.")
 
 
 # WorkingFunctions.hanging_man(Animation.rs)
 
-print(Animation.dframe.index)
-
-mpf.show()
+print(type(Animation.dframe['Volume']))
 
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik)
@@ -76,7 +76,7 @@ def animate(ival):
     WorkingFunctions.engulfing_pattern(Animation.dframe)
 
     mpf.plot(Animation.dframe,
-            ax=ax,
+            ax=[ax,ax_v],
             type="candle",
             style=Broker.design_candle['style'],
             mav=Broker.design_candle['mav'],
