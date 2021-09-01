@@ -1,19 +1,20 @@
 import mplfinance as mpf
 import matplotlib.animation as animation
 
-# import create_candles
-
+import create_candles
 from main import Broker
 from candles import WorkingFunctions
+
+# hell git
 
 class Animation:
     tik = input("Choose your destiny: ")
     Broker.dataframe = Broker.form_data(tik)
     dframe = Broker.dataframe
 
-    # dframe = create_candles.create_c(0)
-
     last_time_index = dframe.index[-1]
+
+    # dframe = create_candles.create_c()
 
     resample_map = {'Open': 'first',
                     'High': 'max',
@@ -21,68 +22,59 @@ class Animation:
                     'Close': 'last'}
     resample_period = '1T'
 
-    # print(dframe)
+    rs = dframe.resample(resample_period).agg(resample_map).dropna()
 
-    new_candle = dframe.iloc[-1]
+    new_candle = rs.iloc[-1]
 
     def get_new_candle(ticker):
         dframe = Broker.form_data(ticker)
-        # dframe = create_candles.create_c(len(Animation.dframe))
 
-        if Animation.new_candle[0] != dframe.iloc[-1][0] or Animation.new_candle[1] != dframe.iloc[-1][1] or Animation.new_candle[2] != dframe.iloc[-1][2] or Animation.new_candle[3] != dframe.iloc[-1][3]:
-            Animation.new_candle = dframe.iloc[-1]
-            print(Animation.new_candle)
+        rs = dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
+
+
+        if Animation.new_candle[0] != rs.iloc[-1][0] or Animation.new_candle[1] != rs.iloc[-1][1] or Animation.new_candle[2] != rs.iloc[-1][2] or Animation.new_candle[3] != rs.iloc[-1][3]:
+            Animation.new_candle = rs.iloc[-1]
             return Animation.new_candle
 
         else:
-            return Animation.get_new_candle(ticker) #!
+            return Animation.get_new_candle(Animation.tik) #!
+
 
 
 fig, axes = mpf.plot(Animation.dframe,
                      returnfig=True,
                      type="candle",
                      style=Broker.design_candle['style'],
-                     mav=Broker.design_candle['mav'],
-                     volume=True,
-                     )
-
+                     mav=Broker.design_candle['mav'])
 ax = axes[0]
-ax_v = axes[2]
-print(axes[2], axes[0])
 
-ax.set_title("Lazarev inc.")
+WorkingFunctions.engulfing_pattern(Animation.rs)
 
-
-# WorkingFunctions.hanging_man(Animation.rs)
-
-print(type(Animation.dframe['Volume']))
+#mpf.show()
 
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik)
 
     Animation.dframe = Animation.dframe.append(nxt)
 
-    print(Animation.dframe)
-
     ax.clear()
 
     if Animation.dframe.index[-1] != Animation.last_time_index:
         Animation.dframe = Animation.dframe.drop([Animation.dframe.index[0]])
 
+    Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()  #
+
     Animation.last_time_index = Animation.dframe.index[-1]
 
-    WorkingFunctions.hammer(Animation.dframe)
-    WorkingFunctions.hanging_man(Animation.dframe)
-    WorkingFunctions.engulfing_pattern(Animation.dframe)
+    WorkingFunctions.hammer(Animation.rs)
+    WorkingFunctions.hanging_man(Animation.rs)
+    WorkingFunctions.engulfing_pattern(Animation.rs)
 
-    mpf.plot(Animation.dframe,
-            ax=[ax,ax_v],
+    mpf.plot(Animation.rs, ax=ax,
             type="candle",
             style=Broker.design_candle['style'],
-            mav=Broker.design_candle['mav'],
-            volume=Broker.design_candle['volume'],
-            main_panel=Broker.design_candle['main_panel'],
-            volume_panel=Broker.design_candle['volume_panel'])
+            mav=Broker.design_candle['mav']
+            )
 
 
 ani = animation.FuncAnimation(fig, animate, interval=10000)
