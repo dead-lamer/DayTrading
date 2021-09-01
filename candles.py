@@ -2,9 +2,9 @@ class WorkingFunctions:
 
     @classmethod
     def find_peak(cls, df): #!
-        peak_top1 = df[-6:]['Open'].max()
-        peak_top2 = df[-6:]['Close'].max()
-        for i in range(len(df)-7, len(df)-1):
+        peak_top1 = df[-5:]['Open'].max()
+        peak_top2 = df[-5:]['Close'].max()
+        for i in range(len(df)-4, len(df)-1):
             # for the last 6 dframes
             if df.iloc[i]['Open'] == peak_top1:
                 peak_top1 = df.iloc[i]['Open']
@@ -19,9 +19,9 @@ class WorkingFunctions:
 
     @classmethod
     def find_bottom(cls, df):
-        peak_low1 = df[-6:]['Open'].min()
-        peak_low2 = df[-6:]['Close'].min()
-        for i in range(len(df)-7, len(df)-1): # for the last 7 dframes
+        peak_low1 = df[-5:]['Open'].min()
+        peak_low2 = df[-5:]['Close'].min()
+        for i in range(len(df)-4, len(df)-1): # for the last 7 dframes
             if df.iloc[i]['Open'] == peak_low1:
                 peak_low1 = df.iloc[i]['Open']
             if df.iloc[i]['Close'] == peak_low2:
