@@ -6,9 +6,9 @@ import pandas as pd
 
 def create_c():
      d = {'Open': [78, 78, 78, 78, 78, 95],
-          'High': [96, 96, 90, 90, 91, 95],
-          'Low': [78, 78, 78, 78, 78, 77.5],
-          'Close': [96, 96, 90, 90, 90, 77.5]}
+          'High': [96, 96, 90, 90, 90, 95],
+          'Low': [78, 78, 78, 78, 78, 80],
+          'Close': [96, 96, 90, 90, 90, 80]}
      df = pd.DataFrame(data=d, index=[dt.fromisoformat("2020-08-20"),
                                       dt.fromisoformat("2020-08-21"),
                                       dt.fromisoformat("2020-08-22"),

@@ -200,6 +200,11 @@ class WorkingFunctions:
                         print(candle1)
                         print("####################################################################")
                         return "Dark Cloud Cover"
+                    elif candle2['High'] == candle2['Close'] and candle2['Low'] == candle2['Open'] and candle1['High'] == candle1['Open'] and candle1['Low'] == candle1['Close']:
+                        print("Strong Dark Cloud Cover (strong down-trend)")
+                        print(candle1)
+                        print("####################################################################")
+                        return "Dark Cloud Cover"
                     else: # usual signals
                         print("Dark cloud cover (down-trend)")
                         print(candle1)
