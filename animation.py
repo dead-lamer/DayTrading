@@ -1,7 +1,8 @@
 import mplfinance as mpf
 import matplotlib.animation as animation
 
-import create_candles
+# import create_candles
+
 from main import Broker
 from candles import WorkingFunctions
 
@@ -12,9 +13,9 @@ class Animation:
     Broker.dataframe = Broker.form_data(tik)
     dframe = Broker.dataframe
 
-    last_time_index = dframe.index[-1]
+    #dframe = create_candles.create_c()
 
-    # dframe = create_candles.create_c()
+    last_time_index = dframe.index[-1]
 
     resample_map = {'Open': 'first',
                     'High': 'max',
@@ -49,8 +50,9 @@ fig, axes = mpf.plot(Animation.dframe,
 ax = axes[0]
 
 WorkingFunctions.engulfing_pattern(Animation.rs)
+WorkingFunctions.dark_cloud_cover(Animation.rs)
 
-#mpf.show()
+mpf.show()
 
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik)
@@ -81,7 +83,7 @@ ani = animation.FuncAnimation(fig, animate, interval=10000)
 
 mpf.show()
 
-# this could help:
+# this could help to add volume plot:
 # import pandas as pd
 # import mplfinance as mpf
 # ohlcv = pd.DataFrame(

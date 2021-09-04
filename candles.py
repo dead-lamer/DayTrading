@@ -4,10 +4,10 @@ class WorkingFunctions:
 
     @classmethod
     def find_peak(cls, df): #!
-        peak_top1 = df[-4:]['Open'].max()
-        peak_top2 = df[-4:]['Close'].max()
-        for i in range(len(df)-4, len(df)-1):
-            # for the last 6 dframes
+        peak_top1 = df[-5:]['Open'].max()
+        peak_top2 = df[-5:]['Close'].max()
+        for i in range(len(df)-3, len(df)-1):
+            # for the last 5 dframes
             if df.iloc[i]['Open'] == peak_top1:
                 peak_top1 = df.iloc[i]['Open']
             if df.iloc[i]['Close'] == peak_top2:
@@ -21,9 +21,9 @@ class WorkingFunctions:
 
     @classmethod
     def find_bottom(cls, df):
-        peak_low1 = df[-4:]['Open'].min()
-        peak_low2 = df[-4:]['Close'].min()
-        for i in range(len(df)-4, len(df)-1): # for the last 7 dframes
+        peak_low1 = df[-5:]['Open'].min()
+        peak_low2 = df[-5:]['Close'].min()
+        for i in range(len(df)-3, len(df)-1): # for the last 5 dframes
             if df.iloc[i]['Open'] == peak_low1:
                 peak_low1 = df.iloc[i]['Open']
             if df.iloc[i]['Close'] == peak_low2:
@@ -146,14 +146,15 @@ class WorkingFunctions:
         if trend == 'Bear-trend':
             if (WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bear' or WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Doji') and WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bull': # Bull engulfing pattern1
                 if candle2['Open'] - candle2['Close'] < candle1['Close'] - candle1['Open']:
-                    if (candle2['Open'] < candle1['Close'] and candle2['Open'] > candle1['Open']) or (candle2['Close'] >= candle1['Open'] and candle2['Open'] <= candle1['Close']):
+                    if candle2['Close'] >= candle1['Open'] and candle2['Open'] <= candle1['Close']:
                         candle3 = df.iloc[-3]
                         if WorkingFunctions.type_candle([candle3['Open'], candle3['Close']]) == "Bear":
                             # strong engulfing signal
                             if (candle3['Open'] - candle3['Close']) + (candle2['Open'] - candle2['Close']) < candle1['Close'] - candle1['Open']:
                                 print("Strong Bull Engulfing Pattern (strong up-trend)")
                                 print(candle1)
-                            else:
+                                return "Strong Bull Engulfing Pattern"
+                            else: # usual signal
                                 print("Bull Engulfing Pattern (up-trend)")
                                 print(candle1)
                                 print("####################################################################")
@@ -162,14 +163,15 @@ class WorkingFunctions:
         if trend == 'Bull-trend':
             if (WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bull' or WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Doji') and WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bear': # Bear engulfing pattern
                 if candle2['Close'] - candle2['Open'] < candle1['Open'] - candle1['Close']:
-                    if (candle2['Close'] > candle1['Open'] and candle2['Open'] < candle1['Open']) or (candle2['Open'] >= candle1['Close'] and candle2['Close'] <= candle1['Open']):
+                    if candle2['Open'] >= candle1['Close'] and candle2['Close'] <= candle1['Open']:
                         candle3 = df.iloc[-3]
                         if WorkingFunctions.type_candle([candle3['Open'], candle3['Close']]) == "Bull":
                             # strong engulfing signal
                             if (candle3['Close'] - candle3['Open']) + (candle2['Close'] - candle2['Open']) < candle1['Open'] - candle1['Close']:
                                 print("Strong Bear Engulfing Pattern (strong down-trend)")
                                 print(candle1)
-                            else:
+                                return "Strong Bear Engulfing Pattern"
+                            else: # usual signal
                                 print("Bear Engulfing Pattern (down-trend)")
                                 print(candle1)
                                 print("####################################################################")
@@ -178,28 +180,34 @@ class WorkingFunctions:
         else:
             return None
 
-# 1) bear candle is peak
+# 1) bear candle is peak (strong signal)
 # 2) bear candle time is 9:30
 # 4) bull and bear
 # 5) bull after up_trend
 # 6) bear open is higher than bull up shadow
-# 7)
-# 8)
 
     @classmethod
     def dark_cloud_cover(cls, df):
-        # last = 15:59:00-04:00
-        # 2021-08-27 15:30:00-04:00
-        start_time = f"{datetime.today().year}-{datetime.today().month}-{datetime.today().day} 09:30"
-        candle1 = df.iloc[-1]
-        # counts from right!!!
+        trend = WorkingFunctions.flow_candle(df)
+        # is counted from left
         candle2 = df.iloc[-2]
-        top_line = WorkingFunctions.find_peak(df)
+        candle1 = df.iloc[-1]
+        if trend == "Bull-trend":
+            if WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bull' and WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bear':
+                if candle2['High'] <= candle1['Open'] and candle2['Open'] < candle1['Close']:
+                    if candle1['Open'] == WorkingFunctions.find_peak(df): # strong signals
+                        print("Strong Dark Cloud Cover (strong down-trend)")
+                        print(candle1)
+                        print("####################################################################")
+                        return "Dark Cloud Cover"
+                    else: # usual signals
+                        print("Dark cloud cover (down-trend)")
+                        print(candle1)
+                        print("####################################################################")
+                        return "Dark Cloud Cover"
 
-        if candle1.index[0:16] == start_time:
-            if WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == 'Bear' and WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == 'Bull':
-                if candle1['Open'] >= top_line and candle2['Close'] < candle1['Open']:
-                    print("test")
+
+
 
 
 
