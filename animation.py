@@ -11,7 +11,7 @@ class Animation:
     Broker.dataframe = Broker.form_data(tik)
     dframe = Broker.dataframe
 
-    #dframe = create_candles.create_c()
+    # dframe = create_candles.create_c()
 
     last_time_index = dframe.index[-1]
 
@@ -47,10 +47,10 @@ fig, axes = mpf.plot(Animation.dframe,
                      mav=Broker.design_candle['mav'])
 ax = axes[0]
 
-WorkingFunctions.engulfing_pattern(Animation.rs)
-WorkingFunctions.dark_cloud_cover(Animation.rs)
+# WorkingFunctions.engulfing_pattern(Animation.rs)
+# WorkingFunctions.dark_cloud_cover(Animation.rs)
 
-mpf.show()
+# mpf.show()
 
 def animate(ival):
     nxt = Animation.get_new_candle(Animation.tik)
@@ -69,6 +69,7 @@ def animate(ival):
     WorkingFunctions.hammer(Animation.rs)
     WorkingFunctions.hanging_man(Animation.rs)
     WorkingFunctions.engulfing_pattern(Animation.rs)
+    WorkingFunctions.dark_cloud_cover(Animation.rs)
 
     mpf.plot(Animation.rs, ax=ax,
             type="candle",
