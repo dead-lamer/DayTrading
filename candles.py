@@ -95,6 +95,8 @@ class WorkingFunctions:
                     print(to_check)
                     print("####################################################################")
                     return "Hammer"
+        else:
+            return None
 
 
         if to_check['Close'] <= bottom_line: #bear
@@ -104,6 +106,8 @@ class WorkingFunctions:
                     print(to_check)
                     print("####################################################################")
                     return "Hammer"
+        else:
+            return None
 
     @classmethod
     def hanging_man(cls, df): # on the top of price; lower shadow >= real body*2; upper shadow should be gone or tiny
@@ -121,6 +125,8 @@ class WorkingFunctions:
                     print(to_check)
                     print("####################################################################")
                     return "Hanging man"
+        else:
+            return None
 
 
         if to_check['Open'] >= top_line: # bear
@@ -132,6 +138,8 @@ class WorkingFunctions:
                     print(to_check)
                     print("####################################################################")
                     return "Hanging man"
+        else:
+            return None
 
 
     @classmethod
@@ -180,11 +188,6 @@ class WorkingFunctions:
         else:
             return None
 
-# 1) bear candle is peak (strong signal)
-# 2) bear candle time is 9:30
-# 4) bull and bear
-# 5) bull after up_trend
-# 6) bear open is higher than bull up shadow
 
     @classmethod
     def dark_cloud_cover(cls, df):
@@ -210,13 +213,24 @@ class WorkingFunctions:
                         print(candle1)
                         print("####################################################################")
                         return "Dark Cloud Cover"
+        else:
+            return None
 
 
+    @classmethod
+    def piercing_pattern(cls, df):
+        trend = WorkingFunctions.flow_candle(df)
+        # is counted from left
+        candle2 = df.iloc[-2]
+        candle1 = df.iloc[-1]
+        if trend == "Bear-trend":
+            if WorkingFunctions.type_candle([candle2['Open'], candle2['Close']]) == "Bear" and WorkingFunctions.type_candle([candle1['Open'], candle1['Close']]) == "Bull":
+                if (candle2['Open'] - candle2['Close'])/2.0 + candle2['Close'] < candle1['Close'] and candle2['Low'] > candle1['Open'] and candle2['Open'] > candle1['Close']:
+                    print("Piercing Pattern (up-trend)")
+                    print(candle1)
+                    print("####################################################################")
+                    return "Piercing Pattern"
 
 
-
-
-
-# TODO сделать сильные сигналы для модели поглощения
-# TODO сделать "завесу из тёмных облаков"
-# TODO: написать регистрирование повешенных в csv файл
+#TODO: Регистрация длины тренда
+#TODO: Сильные сигналы для "просвета"
