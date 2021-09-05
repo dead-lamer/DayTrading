@@ -50,6 +50,7 @@ ax = axes[0]
 
 # WorkingFunctions.engulfing_pattern(Animation.rs)
 # WorkingFunctions.dark_cloud_cover(Animation.rs)
+# WorkingFunctions.piercing_pattern(Animation.rs)
 
 # mpf.show()
 
@@ -71,6 +72,7 @@ def animate(ival):
     WorkingFunctions.hanging_man(Animation.rs)
     WorkingFunctions.engulfing_pattern(Animation.rs)
     WorkingFunctions.dark_cloud_cover(Animation.rs)
+    WorkingFunctions.piercing_pattern(Animation.rs)
 
     mpf.plot(Animation.rs, ax=ax,
             type="candle",
