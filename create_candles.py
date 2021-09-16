@@ -5,16 +5,17 @@ import pandas as pd
 
 
 def create_c():
-     d = {'Open': [90, 80, 70, 60, 50, 40],
-          'High': [90, 80, 70, 60, 50, 50],
-          'Low': [80, 70, 60, 50, 41, 37],
-          'Close': [80, 70, 60, 50, 43, 50]}
+     d = {'Open': [43, 50, 60, 70, 80, 95, 90],
+          'High': [41, 50, 60, 70, 80, 96, 90],
+          'Low': [50, 60, 70, 80, 90, 80, 80],
+          'Close': [50, 60, 70, 80, 90, 90, 80]}
      df = pd.DataFrame(data=d, index=[dt.fromisoformat("2020-08-20"),
                                       dt.fromisoformat("2020-08-21"),
                                       dt.fromisoformat("2020-08-22"),
                                       dt.fromisoformat("2020-08-23"),
                                       dt.fromisoformat("2020-08-24"),
-                                      dt.fromisoformat("2020-08-25")])
+                                      dt.fromisoformat("2020-08-25"),
+                                      dt.fromisoformat("2020-08-26")])
      return df
 
 
