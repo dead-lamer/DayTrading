@@ -1,4 +1,4 @@
-from datetime import datetime
+from InfromStocks.main import amen
 
 class ReversalPatterns:
 
@@ -35,13 +35,14 @@ class ReversalPatterns:
                 return peak_low2
 
     @classmethod
-    def is_body_long(cls, body):  # [open, close]
-        if ReversalPatterns.type_candle(body) == "Bull":  # bull
-            if body[1] / body[0] - 1 >= 0.002:
-                return True
-        elif ReversalPatterns.type_candle(body) == "Bear":  # bear
-            if body[0] / body[1] - 1 >= 0.002:
-                return True
+    def is_body_long(cls, rs, body):  # [open, close]
+        delta = abs(ReversalPatterns.find_common_candle(rs)['Close'] - ReversalPatterns.find_common_candle(rs)['Open'])
+        if abs(body[1] - body[0]) > delta:
+            return True
+        else:
+            return False
+
+
 
     @classmethod
     def type_candle(cls, body):
@@ -60,6 +61,17 @@ class ReversalPatterns:
 
     last_candle = []
 
+    @classmethod
+    def find_common_candle(cls, rs):
+        common_open = sum(rs['Open'])/len(rs)
+        common_close = sum(rs['Close']) / len(rs)
+        common_high = sum(rs['High']) / len(rs)
+        common_low = sum(rs['Low']) / len(rs)
+
+        return {"Open" : common_open,
+                "Close": common_close,
+                "High" : common_high,
+                "Low" : common_low}
 
     @classmethod
     def flow_candle(cls, rs):
@@ -95,7 +107,7 @@ class ReversalPatterns:
                         print('Hammer (strong up mood)')
                         print(to_check)
                         print("####################################################################")
-                        return "Hammer"
+                        return amen("Hammer (strong up mood)", to_check)
             else:
                 return None
 
@@ -106,7 +118,7 @@ class ReversalPatterns:
                         print("Hammer")
                         print(to_check)
                         print("####################################################################")
-                        return "Hammer"
+                        return amen("Hammer", to_check)
             else:
                 return None
 
@@ -126,12 +138,12 @@ class ReversalPatterns:
                             print("Hanging man (strong down mood)")
                             print(to_check)
                             print("####################################################################")
-                            return "Hanging man"
+                            return amen("Hanging man (strong down mood)", to_check)
                         else:
                             print("Hanging man")
                             print(to_check)
                             print("####################################################################")
-                            return "Hanging man"
+                            return amen("Hanging man", to_check)
 
             else:
                 return None
@@ -145,12 +157,12 @@ class ReversalPatterns:
                             print("Hanging man (strong down mood)")
                             print(to_check)
                             print("####################################################################")
-                            return "Hanging man"
+                            return amen("Hanging man (strong down mood)", to_check)
                         else:
                             print("Hanging man (strong down mood)")
                             print(to_check)
                             print("####################################################################")
-                            return "Hanging man"
+                            return amen("Hanging man (strong down mood)", to_check)
             else:
                 return None
 
@@ -174,12 +186,12 @@ class ReversalPatterns:
                             if (candle3['Open'] - candle3['Close']) + (candle2['Open'] - candle2['Close']) < candle1['Close'] - candle1['Open']:
                                 print("Strong Bull Engulfing Pattern (strong up-trend)")
                                 print(candle1)
-                                return "Strong Bull Engulfing Pattern"
+                                return amen("Strong Bull Engulfing Pattern", candle1)
                             else: # usual signal
                                 print("Bull Engulfing Pattern (up-trend)")
                                 print(candle1)
                                 print("####################################################################")
-                                return 'Bull Engulfing Pattern'
+                                return amen('Bull Engulfing Pattern', candle1)
 
         if trend == 'Bull-trend':
             if (ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == 'Bull' or ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == 'Doji') and ReversalPatterns.type_candle([candle1['Open'], candle1['Close']]) == 'Bear': # Bear engulfing pattern
@@ -191,12 +203,12 @@ class ReversalPatterns:
                             if (candle3['Close'] - candle3['Open']) + (candle2['Close'] - candle2['Open']) < candle1['Open'] - candle1['Close']:
                                 print("Strong Bear Engulfing Pattern (strong down-trend)")
                                 print(candle1)
-                                return "Strong Bear Engulfing Pattern"
+                                return amen("Strong Bear Engulfing Pattern", candle1)
                             else: # usual signal
                                 print("Bear Engulfing Pattern (down-trend)")
                                 print(candle1)
                                 print("####################################################################")
-                                return "Bear Engulfing Pattern"
+                                return amen("Bear Engulfing Pattern", candle1)
 
         else:
             return None
@@ -209,28 +221,29 @@ class ReversalPatterns:
         candle2 = df.iloc[-2]
         candle1 = df.iloc[-1]
         if trend == "Bull-trend":
-            if ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == 'Bull' and ReversalPatterns.type_candle([candle1['Open'], candle1['Close']]) == 'Bear':
-                if candle2['High'] <= candle1['Open'] and candle2['Open'] < candle1['Close']:
-                    if candle1['Open'] == ReversalPatterns.find_peak(df): # strong signals
-                        print("Strong Dark Cloud Cover (strong down-trend)")
-                        print(candle1)
-                        print("####################################################################")
-                        return "Dark Cloud Cover"
-                    elif candle2['High'] == candle2['Close'] and candle2['Low'] == candle2['Open'] and candle1['High'] == candle1['Open'] and candle1['Low'] == candle1['Close']:
-                        print("Strong Dark Cloud Cover (strong down-trend)")
-                        print(candle1)
-                        print("####################################################################")
-                        return "Dark Cloud Cover"
-                    elif (candle2['Close'] - candle2['Open'])/2.0 + candle2['Open'] < candle1['Open']:
-                        print("Strong Dark Cloud Cover (strong down-trend)")
-                        print(candle1)
-                        print("####################################################################")
-                        return "Dark Cloud Cover"
-                    else: # usual signals
-                        print("Dark cloud cover (down-trend)")
-                        print(candle1)
-                        print("####################################################################")
-                        return "Dark Cloud Cover"
+            if ReversalPatterns.is_body_long(df, [candle1['Open'], candle1['Close']]) and ReversalPatterns.is_body_long(df, [candle2['Open'], candle2['Close']]):
+                if ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == 'Bull' and ReversalPatterns.type_candle([candle1['Open'], candle1['Close']]) == 'Bear':
+                    if candle2['High'] <= candle1['Open'] and candle2['Open'] < candle1['Close']:
+                        if candle1['Open'] == ReversalPatterns.find_peak(df): # strong signals
+                            print("Strong Dark Cloud Cover (strong down-trend)")
+                            print(candle1)
+                            print("####################################################################")
+                            return amen("Strong Dark Cloud Cover", candle1)
+                        elif candle2['High'] == candle2['Close'] and candle2['Low'] == candle2['Open'] and candle1['High'] == candle1['Open'] and candle1['Low'] == candle1['Close']:
+                            print("Strong Dark Cloud Cover (strong down-trend)")
+                            print(candle1)
+                            print("####################################################################")
+                            return amen("Strong Dark Cloud Cover", candle1)
+                        elif (candle2['Close'] - candle2['Open'])/2.0 + candle2['Open'] < candle1['Open']:
+                            print("Strong Dark Cloud Cover (strong down-trend)")
+                            print(candle1)
+                            print("####################################################################")
+                            return amen("Strong Dark Cloud Cover", candle1)
+                        else: # usual signals
+                            print("Dark cloud cover (down-trend)")
+                            print(candle1)
+                            print("####################################################################")
+                            return amen("Dark Cloud Cover", candle1)
         else:
             return None
 
@@ -242,37 +255,72 @@ class ReversalPatterns:
         candle2 = df.iloc[-2]
         candle1 = df.iloc[-1]
         if trend == "Bear-trend":
-            if ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == "Bear" and ReversalPatterns.type_candle([candle1['Open'], candle1['Close']]) == "Bull":
-                if (candle2['Open'] - candle2['Close'])/2.0 + candle2['Close'] < candle1['Close'] and candle2['Low'] > candle1['Open'] and candle2['Open'] > candle1['Close']:
-                    if candle1['High'] == candle1['Close'] and candle1['Low'] == candle1['Open']:
-                        print("Strong Piercing Pattern (strong up-trend)")
-                        print(candle1)
-                        print("####################################################################")
-                        return "Piercing Pattern"
-                    else:
-                        print("Piercing Pattern (up-trend)")
-                        print(candle1)
-                        print("####################################################################")
-                        return "Piercing Pattern"
+            if ReversalPatterns.is_body_long(df, [candle1['Open'], candle1['Close']]) and ReversalPatterns.is_body_long(df, [candle2['Open'], candle2['Close']]):
+                if ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == "Bear" and ReversalPatterns.type_candle([candle1['Open'], candle1['Close']]) == "Bull":
+                    if (candle2['Open'] - candle2['Close'])/2.0 + candle2['Close'] < candle1['Close'] and candle2['Low'] > candle1['Open'] and candle2['Open'] > candle1['Close']:
+                        if candle1['High'] == candle1['Close'] and candle1['Low'] == candle1['Open']:
+                            print("Strong Piercing Pattern (strong up-trend)")
+                            print(candle1)
+                            print("####################################################################")
+                            return amen("Strong Piercing Pattern", candle1)
+                        else:
+                            print("Piercing Pattern (up-trend)")
+                            print(candle1)
+                            print("####################################################################")
+                            return amen("Piercing Pattern", candle1)
+        else:
+            return None
 
 
     @classmethod
     def on_neck(cls, df):
         trend = ReversalPatterns.flow_candle(df)
         # is counted from left
-        candle2 = df.iloc[-2]
-        candle1 = df.iloc[-1]
+        candle2 = df.iloc[-3]
+        candle1 = df.iloc[-2]
         if trend == "Bear-trend":
             if ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == "Bear" and ReversalPatterns.type_candle([candle1['Open'], candle1['Close']]) == "Bull":
-                if candle2['Low'] >= candle1['Close']:
-                    print("On-neck (down-trend)")
+                if candle2['Low'] <= candle1['Close'] and candle2['Close'] > candle1['Close']:
+                    candle3 = df.iloc[-1]
+                    if candle3['High'] < candle1['Low']:
+                        print("Strong on-neck (strong down trend)")
+                        print(candle1)
+                        print("####################################################################")
+                        return amen("Strong on-neck", candle1)
+
+                    else:
+                        print("On-neck (down-trend)")
+                        print(candle1)
+                        print("####################################################################")
+                        return amen("On-neck", candle1)
+        else:
+            return None
+
 
 
 
     @classmethod
-    def in_neck(cls):
-        pass
-
+    def in_neck(cls, df):
+        trend = ReversalPatterns.flow_candle(df)
+        # is counted from left
+        candle2 = df.iloc[-3]
+        candle1 = df.iloc[-2]
+        if trend == "Bear-trend":
+            if ReversalPatterns.type_candle([candle2['Open'], candle2['Close']]) == "Bear" and ReversalPatterns.type_candle([candle1['Open'], candle1['Close']]) == "Bull":
+                if candle2['Close'] <= candle1['Close'] and candle1['Close'] <= (candle2['Open'] - candle2['Close'])/4 + candle2['Close']:
+                    candle3 = df.iloc[-1]
+                    if candle3['High'] < candle1['Low']:
+                        print("Strong in-neck (strong down trend)")
+                        print(candle1)
+                        print("####################################################################")
+                        return amen("Strong in-neck", candle1)
+                    else:
+                        print("In-neck (down-trend)")
+                        print(candle1)
+                        print("####################################################################")
+                        return amen("In-neck", candle1)
+        else:
+            return None
 
     @classmethod
     def thrusting_pattern(cls):
@@ -282,6 +330,3 @@ class ReversalPatterns:
 class Stars:
     pass
 
-
-#TODO: Регистрация длины тренда
-#TODO: Сильные сигналы для "просвета"

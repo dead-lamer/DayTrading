@@ -10,9 +10,9 @@ from candles import ReversalPatterns
 class Animation:
     tik = input("Choose your destiny: ")
     Broker.dataframe = Broker.form_data(tik)
-    dframe = Broker.dataframe
+    # dframe = Broker.dataframe
 
-    # dframe = create_candles.create_c()
+    dframe = create_candles.create_c()
 
     last_time_index = dframe.index[-1]
 
@@ -48,12 +48,9 @@ fig, axes = mpf.plot(Animation.dframe,
                      mav=Broker.design_candle['mav'])
 ax = axes[0]
 
-ReversalPatterns.engulfing_pattern(Animation.rs)
-ReversalPatterns.dark_cloud_cover(Animation.rs)
-ReversalPatterns.piercing_pattern(Animation.rs)
-ReversalPatterns.hanging_man(Animation.rs)
+ReversalPatterns.in_neck(Animation.rs)
 
-#mpf.show()
+mpf.show()
 
 def animate(ival):
 
@@ -76,6 +73,8 @@ def animate(ival):
     ReversalPatterns.engulfing_pattern(Animation.rs)
     ReversalPatterns.dark_cloud_cover(Animation.rs)
     ReversalPatterns.piercing_pattern(Animation.rs)
+    ReversalPatterns.on_neck(Animation.rs)
+    ReversalPatterns.in_neck(Animation.rs)
 
     mpf.plot(Animation.rs, ax=ax,
             type="candle",
