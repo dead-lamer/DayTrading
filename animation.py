@@ -2,25 +2,25 @@ import mplfinance as mpf
 import matplotlib.animation as animation
 
 import create_candles
-from main import Broker
-from candles import WorkingFunctions
 
-# hell git
+from main import Broker
+from candles import ReversalPatterns
+
 
 class Animation:
     tik = input("Choose your destiny: ")
     Broker.dataframe = Broker.form_data(tik)
     dframe = Broker.dataframe
 
-    last_time_index = dframe.index[-1]
-
     # dframe = create_candles.create_c()
+
+    last_time_index = dframe.index[-1]
 
     resample_map = {'Open': 'first',
                     'High': 'max',
                     'Low': 'min',
                     'Close': 'last'}
-    resample_period = '1T'
+    resample_period = 'H'
 
     rs = dframe.resample(resample_period).agg(resample_map).dropna()
 
@@ -48,27 +48,33 @@ fig, axes = mpf.plot(Animation.dframe,
                      mav=Broker.design_candle['mav'])
 ax = axes[0]
 
-WorkingFunctions.engulfing_pattern(Animation.rs)
+ReversalPatterns.in_neck(Animation.rs)
 
-#mpf.show()
+mpf.show()
 
 def animate(ival):
+
     nxt = Animation.get_new_candle(Animation.tik)
 
     Animation.dframe = Animation.dframe.append(nxt)
+
 
     ax.clear()
 
     if Animation.dframe.index[-1] != Animation.last_time_index:
         Animation.dframe = Animation.dframe.drop([Animation.dframe.index[0]])
 
-    Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()  #
+    Animation.rs = Animation.dframe.resample(Animation.resample_period).agg(Animation.resample_map).dropna()
 
     Animation.last_time_index = Animation.dframe.index[-1]
 
-    WorkingFunctions.hammer(Animation.rs)
-    WorkingFunctions.hanging_man(Animation.rs)
-    WorkingFunctions.engulfing_pattern(Animation.rs)
+    ReversalPatterns.hammer(Animation.rs)
+    ReversalPatterns.hanging_man(Animation.rs)
+    ReversalPatterns.engulfing_pattern(Animation.rs)
+    ReversalPatterns.dark_cloud_cover(Animation.rs)
+    ReversalPatterns.piercing_pattern(Animation.rs)
+    ReversalPatterns.on_neck(Animation.rs)
+    ReversalPatterns.in_neck(Animation.rs)
 
     mpf.plot(Animation.rs, ax=ax,
             type="candle",

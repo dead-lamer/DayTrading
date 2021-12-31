@@ -2,9 +2,6 @@ from pandas_datareader import data as pdr
 import yfinance as yf # this lib is free
 from datetime import datetime
 import matplotlib.pyplot as plt
-import pandas as pd
-import matplotlib.dates as mpl_dates
-from candles import WorkingFunctions
 
 M = datetime.today().minute
 h = datetime.today().hour
@@ -20,12 +17,13 @@ class Broker:
     def form_data(tik): # could use 12Data if was rich enough
         yf.pdr_override()
         ohlc = pdr.get_data_yahoo(tickers=tik,
-                                  period="30m",
-                                  interval="1m")
+                                  period="4d", # []
+                                  interval="1h") # [1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo]
         ohlc = ohlc.astype(float)
         plt.style.use('ggplot')
         # Extracting Data for plotting
         ohlc = ohlc.loc[:, ['Open', 'High', 'Low', 'Close']]
+        # print(ohlc)
         return ohlc
 
     dataframe = None
