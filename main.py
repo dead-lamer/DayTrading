@@ -45,7 +45,7 @@ class Broker:
         url = "https://stock-market-data.p.rapidapi.com/stock/buzz/news"
         querystring = {"ticker_symbol":f"{tik}","date":f"{y}-{m}-{d}"}
         headers = {
-            'x-rapidapi-key': "11d8bc37d8mshf186de22a127423p1552c3jsnd379e8ad19aa",
+            'x-rapidapi-key': "",
             'x-rapidapi-host': "stock-market-data.p.rapidapi.com"
             }
         response = requests.get(url, headers)
